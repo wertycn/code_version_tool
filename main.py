@@ -36,10 +36,11 @@ class F10_CLI(cli.Application):
         self.branch = branch
 
     def replace_template(self, task_no, template):
+        version_info = self.get_version_info()
         template = template.replace("{{ TASK_NO }}", task_no)
         template = template.replace("{{ DATE }}", "2020-07-31")
         template = template.replace("{{ DATETIME }}", "2020-07-31 15:27:31")
-        template = template.replace("{{ DEVELOPMENT }}", "hanjinxiang@myhexin.com")
+        template = template.replace("{{ DEVELOPMENT }}", version_info['author'])
         template = template.replace("{{ PROJECT_GIT_NAME }}", "")
         template = template.replace("{{ PROJECT_GIT_URL }}", "")
         return template
@@ -50,7 +51,7 @@ class F10_CLI(cli.Application):
 
     def get_git_diff_log(self):
         commod = 'git log ...' + self.branch + ' --format="%H -|---|- %ci -|---|- %ce -|---|- %s"'
-        
+        dir = os.getegid()
 
     @cli.switch(['check'], str)
     def check_version_desc_exist(self, task_no):
@@ -74,9 +75,21 @@ class F10_CLI(cli.Application):
     def get_work_dir(self):
         print("获取工作路径")
 
-    # # 生成版本描述文件
+    # 生成版本描述文件
     def main(self, *args):
+        """
+        :param args:
+        :return:
+        """
         print("CLI RUN END")
+
+    def get_version_info(self):
+        """
+        获取提交版本数据
+        :return:
+        """
+
+        pass
 
 
 if __name__ == '__main__':
