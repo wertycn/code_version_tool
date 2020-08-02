@@ -2,26 +2,30 @@ package app
 
 import (
 	"fmt"
+	"os/exec"
 )
-import "gopkg.in/src-d/go-git.v4"
+
 /**
  * 获取当前版本数据
  */
 func GetVersionInfo() {
-	//split := " -|---|- "
-	r, err := git.PlainOpen("./")
-	if err != nil{
-
-	}
-
-	ref, err := r.Head()
-
-	//since := time.Date(2019, 1, 1, 0, 0, 0, 0, time.UTC)
-	//until := time.Date(2019, 7, 30, 0, 0, 0, 0, time.UTC)
-	w, err := r.Log(&git.LogOptions{From: ref.Hash()})
-	fmt.Println(w)
+	split := " -|---|- "
 	//common := `git log ...master  --format="%H` + split + `%ci` + split + `%ce` + split + `%s"`
-	//common := "git branch"
-	//command.Run(common)
+	//common := "git version"
+	shell := exec.Command("git","log",`--format=%H` + split + `%ci` + split + `%ce` + split + `%s`)
+
+
+	//fmt.Println(command)
+
+	output, err := shell.Output()
+	if err != nil {
+		fmt.Println(err)
+		fmt.Println(output)
+		//fmt.Printf("Execute Shell:%s failed with error:%s", command, err.Error())
+		return
+	}
+	fmt.Println(err)
+	fmt.Println(string(output))
+
 
 }

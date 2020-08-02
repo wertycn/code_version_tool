@@ -6,7 +6,7 @@ import (
 	"runtime"
 )
 
-func Run(command string) {
+func Run(command string, args string) {
 	//command := `./dir_size.sh .`
 	sysType := runtime.GOOS
 	var shell *exec.Cmd
@@ -14,8 +14,8 @@ func Run(command string) {
 	if sysType == "windows" {
 
 		// windows系统
-		shell = exec.Command( "C:\\Windows\\System32\\cmd.exe","git version")
-		//fmt.Println(command)
+		shell = exec.Command( command,args)
+		fmt.Println(command)
 
 	}else {
 		//shell = exec.Command("/bin/bash",  command)
