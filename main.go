@@ -17,9 +17,12 @@ package main
 
 import (
 	"F10-CLI/app"
+	"fmt"
 )
 
 func main() {
-	app.GetVersionInfo()
+
+	logs := app.GetVersionInfo("dev")
+	fmt.Println(logs)
 	//cmd.Execute()
 }
