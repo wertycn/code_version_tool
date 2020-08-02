@@ -21,13 +21,9 @@ func GetVersionInfo(branch string) []GIT_LOG {
 	hashMap := getBranchCommitHashs(branch, startTime)
 	var GitLogSlice []GIT_LOG
 	for _, GitLog := range logs {
-		//fmt.Println(i)
 		if _, ok := hashMap[GitLog.Hash]; ok {
-			fmt.Println("ok", ok)
-			fmt.Println("ok GitLog", GitLog)
 			continue
 		}
-		fmt.Println("GitLog:", GitLog)
 		GitLogSlice = append(GitLogSlice, GitLog)
 	}
 	return GitLogSlice
@@ -50,24 +46,21 @@ func getDiffLog(branch string) ([]GIT_LOG, string) {
 	if string(output) == "" {
 		return nil, ""
 	}
-	log_list := strings.Split(string(output), "\n")
-	var GitLogSlice = make([]GIT_LOG, 10)
-	fmt.Println("log list:", log_list)
+	logList := strings.Split(string(output), "\n")
+	var GitLogSlice = make([]GIT_LOG, 0)
+	//fmt.Println("log list:", logList)
 	var stratTime string
-	for _, log_string := range log_list {
-		fmt.Println("log_string", log_string)
-		//fmt.Println("log_string", n)
-
+	for _, log_string := range logList {
 		var GitLog GIT_LOG
-		log_string_list := strings.Split(string(log_string), split)
-		if len(log_string_list) != 4 {
-			fmt.Println(log_string)
+		logStringList := strings.Split(string(log_string), split)
+		if len(logStringList) != 4 {
+			fmt.Println("continue")
 			continue
 		}
-		GitLog.Hash = log_string_list[0]
-		GitLog.Date = log_string_list[1][0:19]
-		GitLog.Author = log_string_list[2]
-		GitLog.Commit = log_string_list[3]
+		GitLog.Hash = logStringList[0]
+		GitLog.Date = logStringList[1][0:19]
+		GitLog.Author = logStringList[2]
+		GitLog.Commit = logStringList[3]
 		GitLogSlice = append(GitLogSlice, GitLog)
 		stratTime = GitLog.Date
 	}
@@ -75,7 +68,7 @@ func getDiffLog(branch string) ([]GIT_LOG, string) {
 
 }
 
-func getBranchCommitHashs(branch string, startTime string) map[string]int {
+func getBranchCommitHashs(branch string, startTime string) map[string]bool {
 	common := `git log ` + branch
 	//git log dev --after="2020-08-03 00:00:00" --format=%H
 	shell := exec.Command("git", "log", branch, `--after="`+startTime+`"`, `--format=%H`)
@@ -85,12 +78,12 @@ func getBranchCommitHashs(branch string, startTime string) map[string]int {
 		//return nil, ""
 		return nil
 	}
-	hash_list := strings.Split(string(output), "\n")
-	var hash_list_res = make(map[string]int)
-	for _, hash := range hash_list {
+	hashList := strings.Split(string(output), "\n")
+	var hashListRes = make(map[string]bool)
+	for _, hash := range hashList {
 		if hash != "" {
-			hash_list_res[hash] = 1
+			hashListRes[hash] = true
 		}
 	}
-	return hash_list_res
+	return hashListRes
 }
