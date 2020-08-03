@@ -47,8 +47,9 @@ func GetTemplateContent() string {
 	return string(contentByte)
 }
 
-func ReplaceContent(content string, versionInfo VersionInfo) string {
+func ReplaceContent(content string, versionInfo VersionInfoType) string {
 	content = strings.ReplaceAll(content, "{{ DATETIME }}", versionInfo.DateTime)
+	content = strings.ReplaceAll(content, "{{ DATE }}", versionInfo.DateTime)
 	content = strings.ReplaceAll(content, "{{ PROJECT_GIT_URL }}", versionInfo.ProjectGitUrl)
 	content = strings.ReplaceAll(content, "{{ TASK_NO }}", versionInfo.Version)
 	content = strings.ReplaceAll(content, "{{ DEVELOPMENT }}", versionInfo.Development)

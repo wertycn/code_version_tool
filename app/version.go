@@ -6,14 +6,26 @@ import (
 	"strings"
 )
 
-type GIT_LOG struct {
+type Commit struct {
 	Hash   string
 	Date   string
 	Author string
-	Commit string
+	Desc   string
 }
 
-type VersionInfo struct {
+type CommitChange struct {
+	Feat     string
+	Fix      string
+	Docs     string
+	Style    string
+	Refactor string
+	Perf     string
+	Test     string
+	Revert   string
+	Other    string
+}
+
+type VersionInfoType struct {
 	Version              string
 	ProjectGitName       string
 	ProjectGitUrl        string
@@ -24,13 +36,16 @@ type VersionInfo struct {
 	CodeChangeCommitInfo string
 }
 
+var VersionInfo VersionInfoType
+var URL = ""
+
 /**
  * 获取当前版本数据
  */
-func GetCommitLogInfo(branch string) []GIT_LOG {
+func GetCommitLogInfo(branch string) []Commit {
 	logs, startTime := getDiffLog(branch)
 	hashMap := getBranchCommitHashs(branch, startTime)
-	var GitLogSlice []GIT_LOG
+	var GitLogSlice []Commit
 	for _, GitLog := range logs {
 		if _, ok := hashMap[GitLog.Hash]; ok {
 			continue
@@ -43,11 +58,11 @@ func GetCommitLogInfo(branch string) []GIT_LOG {
 /**
  * 获取差异日志对象及最早时间
  */
-func getDiffLog(branch string) ([]GIT_LOG, string) {
+func getDiffLog(branch string) ([]Commit, string) {
 	split := " -|---|- "
-	common := `git log ...` + branch + `  --format="%H` + split + `%ci` + split + `%ce` + split + `%s"`
+	common := `git log ...` + branch + `  --format="%h` + split + `%ci` + split + `%ce` + split + `%s"`
 	//common := "git version"
-	shell := exec.Command("git", "log", "..."+branch, `--format=%H`+split+`%ci`+split+`%ce`+split+`%s`)
+	shell := exec.Command("git", "log", "..."+branch, `--format=%h`+split+`%ci`+split+`%ce`+split+`%s`)
 	output, err := shell.Output()
 	if err != nil {
 		fmt.Printf("Execute Shell:%s failed with error:%s", common, err.Error())
@@ -58,11 +73,11 @@ func getDiffLog(branch string) ([]GIT_LOG, string) {
 		return nil, ""
 	}
 	logList := strings.Split(string(output), "\n")
-	var GitLogSlice = make([]GIT_LOG, 0)
+	var GitLogSlice = make([]Commit, 0)
 	//fmt.Println("log list:", logList)
 	var stratTime string
 	for _, log_string := range logList {
-		var GitLog GIT_LOG
+		var GitLog Commit
 		logStringList := strings.Split(string(log_string), split)
 		if len(logStringList) != 4 {
 			fmt.Println("continue")
@@ -71,7 +86,7 @@ func getDiffLog(branch string) ([]GIT_LOG, string) {
 		GitLog.Hash = logStringList[0]
 		GitLog.Date = logStringList[1][0:19]
 		GitLog.Author = logStringList[2]
-		GitLog.Commit = logStringList[3]
+		GitLog.Desc = logStringList[3]
 		GitLogSlice = append(GitLogSlice, GitLog)
 		stratTime = GitLog.Date
 	}
@@ -97,4 +112,41 @@ func getBranchCommitHashs(branch string, startTime string) map[string]bool {
 		}
 	}
 	return hashListRes
+}
+
+func FormatCommitLog(gitLog []Commit) (string, string) {
+	var commitLog string
+	var authorMap = make(map[string]string)
+	var i = 1
+	for _, commit := range gitLog {
+		commitLog = commitLog + fmt.Sprintf("%d. %s [%s](%s)\n", i, commit.Desc, commit.Hash, URL)
+		//commitLog = commitLog + string(i) + "." + commit.Desc + " [" + commit.Hash + "](" + URL + ")\n"
+		i = i + 1
+		if _, ok := authorMap[commit.Author]; ok {
+			continue
+		}
+
+		authorMap[commit.Author] = commit.Author
+	}
+	var authors string
+	for author, _ := range authorMap {
+		authors = authors + author + "; "
+	}
+	return commitLog, authors
+}
+
+func GetFormatCommitLog(branch string) (string, string) {
+	info := GetCommitLogInfo(branch)
+	commit, authors := FormatCommitLog(info)
+	VersionInfo.CodeChangeCommitInfo = commit
+	VersionInfo.Development = authors
+	return commit, authors
+}
+
+func CreateVersionFile(version string, branch string) {
+	VersionInfo.Version = version
+	GetFormatCommitLog(branch)
+	content := GetTemplateContent()
+	content = ReplaceContent(content, VersionInfo)
+	CreateFile(content, version)
 }

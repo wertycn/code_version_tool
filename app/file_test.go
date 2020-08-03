@@ -31,7 +31,7 @@ func TestGetTemplateContent(t *testing.T) {
 
 func TestReplaceContent(t *testing.T) {
 	content := app.GetTemplateContent()
-	var version app.VersionInfo
+	var version app.VersionInfoType
 	version.CodeChangeCommitInfo = "代码改动commit 日志"
 	version.CodeChangeFileCount = "代码改动统计数据"
 	version.CodeChangeFileInfo = "代码变动文件清单"
@@ -42,4 +42,21 @@ func TestReplaceContent(t *testing.T) {
 	cont := app.ReplaceContent(content, version)
 	app.CreateFile(cont, "TEST")
 	t.Log("pass")
+}
+
+func TestGetCommitLogInfo(t *testing.T) {
+	info := app.GetCommitLogInfo("dev")
+	t.Log(info)
+}
+
+func TestFormatCommitLog(t *testing.T) {
+	info := app.GetCommitLogInfo("dev")
+	commit, authors := app.FormatCommitLog(info)
+	t.Log(commit)
+	t.Log(authors)
+}
+
+func TestCreateVersionFile(t *testing.T) {
+	app.CreateVersionFile("LOCAL_TEST", "dev")
+	t.Log("PASS...")
 }

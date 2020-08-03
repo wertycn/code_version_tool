@@ -1,11 +1,11 @@
-# {{ TASK_NO }} 版本变更信息 {{ DATE }}
+# LOCAL_TEST 版本变更信息 
 
 ## 一、任务信息
-* 项目名称：{{ DATETIME }}
-* 项目地址：{{ PROJECT_GIT_URL }}
-* 任务编号：{{ TASK_NO }}
-* 开发成员：{{ DEVELOPMENT }}
-* 生成时间：{{ DATETIME }}
+* 项目名称：
+* 项目地址：
+* 任务编号：LOCAL_TEST
+* 开发成员：hajnxg@126.com; 
+* 生成时间：
 
 ## 二、变更情况
 
@@ -22,19 +22,22 @@
 
 * 变动统计
 
-{{ CODE_CHANGE_FILE_COUNT }}
+
 
 * 文件变动
 
 ```
 
-{{ CODE_CHANGE_FILE_INFO }}
+
 
 ```
 
 * COMMIT LOG
 
-{{ CODE_CHANGE_COMMIT_INFO }}
+1. 新增：生成版本文件相关功能 [d3a3224]()
+2. 完成git log 提信息提取封装 [254f0c0]()
+3. a [2eb3b02]()
+
 
 统计方式：
 ```shell
@@ -79,6 +82,17 @@
 ### 2. 任务命令
 
 <!-- 如需要定时任务执行脚本，请输入本次功能所需脚本的执行命令 -->
+
+```shell
+# 
+
+```
+
+
+
+
+
+行脚本，请输入本次功能所需脚本的执行命令 -->
 
 ```shell
 # 
