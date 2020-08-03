@@ -21,8 +21,7 @@ import (
 )
 
 func main() {
-
-	logs := app.GetVersionInfo("dev")
+	logs := app.GetCommitLogInfo("dev")
 	fmt.Println(logs)
 	//cmd.Execute()
 }

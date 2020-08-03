@@ -13,10 +13,21 @@ type GIT_LOG struct {
 	Commit string
 }
 
+type VersionInfo struct {
+	Version              string
+	ProjectGitName       string
+	ProjectGitUrl        string
+	Development          string
+	DateTime             string
+	CodeChangeFileCount  string
+	CodeChangeFileInfo   string
+	CodeChangeCommitInfo string
+}
+
 /**
  * 获取当前版本数据
  */
-func GetVersionInfo(branch string) []GIT_LOG {
+func GetCommitLogInfo(branch string) []GIT_LOG {
 	logs, startTime := getDiffLog(branch)
 	hashMap := getBranchCommitHashs(branch, startTime)
 	var GitLogSlice []GIT_LOG
