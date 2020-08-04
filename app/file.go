@@ -51,6 +51,7 @@ func ReplaceContent(content string, versionInfo VersionInfoType) string {
 	content = strings.ReplaceAll(content, "{{ DATETIME }}", versionInfo.DateTime)
 	content = strings.ReplaceAll(content, "{{ DATE }}", versionInfo.DateTime)
 	content = strings.ReplaceAll(content, "{{ PROJECT_GIT_URL }}", versionInfo.ProjectGitUrl)
+	content = strings.ReplaceAll(content, "{{ PROJECT_GIT_NAME }}", versionInfo.ProjectGitName)
 	content = strings.ReplaceAll(content, "{{ TASK_NO }}", versionInfo.Version)
 	content = strings.ReplaceAll(content, "{{ DEVELOPMENT }}", versionInfo.Development)
 	content = strings.ReplaceAll(content, "{{ CODE_CHANGE_FILE_COUNT }}", versionInfo.CodeChangeFileCount)

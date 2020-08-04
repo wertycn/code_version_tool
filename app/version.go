@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os/exec"
 	"strings"
+	"time"
 )
 
 type Commit struct {
@@ -129,7 +130,6 @@ func GetChangeFileInfo(branch string) string {
 	return diffLogStat
 }
 
-
 func getBranchCommitHashs(branch string, startTime string) map[string]bool {
 	common := `git log ` + branch
 	//git log dev --after="2020-08-03 00:00:00" --format=%H
@@ -179,12 +179,13 @@ func GetFormatCommitLog(branch string) (string, string) {
 	return commit, authors
 }
 
-func CreateVersionFile(version string, branch string,remote string) {
+func CreateVersionFile(version string, branch string, remote string) {
 	VersionInfo.Version = version
 	GetFormatCommitLog(branch)
 	GetChangeFileInfo(branch)
 	GetProjectNameAndRemoteUrl(remote)
 	content := GetTemplateContent()
+	VersionInfo.DateTime = time.Now().Format("2006-01-02 15:04:05")
 	content = ReplaceContent(content, VersionInfo)
 	CreateFile(content, version)
 }
