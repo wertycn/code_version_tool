@@ -40,7 +40,7 @@ generate命令将对比当前分支与主分支（默认为master，可通过--b
 	F10-CLI generate 版本(任务)编号 --branch master --remote origin 
 
     强制重新生成 默认为false
-	F10-CLI generate 版本(任务)编号 --overwrite true
+	F10-CLI generate 版本(任务)编号 --overwrite
 
 `,
 	Args: cobra.ExactArgs(1),
