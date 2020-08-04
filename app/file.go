@@ -34,7 +34,7 @@ func IsExist(path string) bool {
 }
 
 func GetTemplateContent() string {
-	f, err := os.Open("../template/version.md")
+	f, err := os.Open("./template/version.md")
 	defer f.Close()
 	if err != nil {
 		fmt.Println("文件读取错误")

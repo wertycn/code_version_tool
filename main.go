@@ -16,12 +16,11 @@ limitations under the License.
 package main
 
 import (
-	"F10-CLI/app"
-	"fmt"
+	"F10-CLI/cmd"
 )
 
 func main() {
-	logs := app.GetCommitLogInfo("dev")
-	fmt.Println(logs)
-	//cmd.Execute()
+	//logs := app.GetCommitLogInfo("dev")
+	//fmt.Println(logs)
+	cmd.Execute()
 }
