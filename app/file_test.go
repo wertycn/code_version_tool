@@ -57,6 +57,17 @@ func TestFormatCommitLog(t *testing.T) {
 }
 
 func TestCreateVersionFile(t *testing.T) {
-	app.CreateVersionFile("LOCAL_TEST", "dev")
+	app.CreateVersionFile("LOCAL_TEST", "dev","origin1")
 	t.Log("PASS...")
+}
+
+func TestGetRemoteUrl(t *testing.T) {
+	url, name := app.GetProjectNameAndRemoteUrl("origin1")
+	t.Log("pass", url, name)
+}
+
+
+func TestGetChangeFileInfo(t *testing.T) {
+	info := app.GetChangeFileInfo("dev")
+	t.Log(info)
 }

@@ -94,6 +94,42 @@ func getDiffLog(branch string) ([]Commit, string) {
 
 }
 
+func GetProjectNameAndRemoteUrl(name string) (string, string) {
+	shell := exec.Command("git", "remote", "get-url", name)
+	output, err := shell.Output()
+	if err != nil {
+		fmt.Printf("Execute Shell:%s failed with error:%s", "", err.Error())
+		//return nil, ""
+	}
+	gitUrl := string(output)
+	fmt.Println("output:", gitUrl)
+	if gitUrl == "" {
+		return "", ""
+	}
+	gitUrl = strings.Replace(gitUrl, "\n", "", 1)
+
+	s := strings.Split(gitUrl, "/")
+	var le int = len(s) - 1
+	var projectName string = s[le]
+	projectName = strings.Replace(projectName, ".git", "", 1)
+	VersionInfo.ProjectGitName = projectName
+	VersionInfo.ProjectGitUrl = gitUrl
+	return gitUrl, projectName
+}
+
+func GetChangeFileInfo(branch string) string {
+	shell := exec.Command("git", "diff", ".."+branch, "--stat")
+	output, err := shell.Output()
+	if err != nil {
+		fmt.Printf("Execute Shell:%s failed with error:%s", "", err.Error())
+		return ""
+	}
+	diffLogStat := string(output)
+	VersionInfo.CodeChangeFileInfo = diffLogStat
+	return diffLogStat
+}
+
+
 func getBranchCommitHashs(branch string, startTime string) map[string]bool {
 	common := `git log ` + branch
 	//git log dev --after="2020-08-03 00:00:00" --format=%H
@@ -143,9 +179,11 @@ func GetFormatCommitLog(branch string) (string, string) {
 	return commit, authors
 }
 
-func CreateVersionFile(version string, branch string) {
+func CreateVersionFile(version string, branch string,remote string) {
 	VersionInfo.Version = version
 	GetFormatCommitLog(branch)
+	GetChangeFileInfo(branch)
+	GetProjectNameAndRemoteUrl(remote)
 	content := GetTemplateContent()
 	content = ReplaceContent(content, VersionInfo)
 	CreateFile(content, version)
