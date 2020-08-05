@@ -63,7 +63,7 @@ func getDiffLog(branch string) ([]Commit, string) {
 	split := " -|---|- "
 	common := `git log ...` + branch + `  --format="%h` + split + `%ci` + split + `%ce` + split + `%s"`
 	//common := "git version"
-	shell := exec.Command("git", "log", "..."+branch, `--format=%h`+split+`%ci`+split+`%ce`+split+`%s`)
+	shell := exec.Command("git", "log", "..."+branch, `--format=%h`+split+`%ci`+split+`%ce`+split+`%s`,"--no-merges")
 	output, err := shell.Output()
 	if err != nil {
 		fmt.Printf("Execute Shell:%s failed with error:%s", common, err.Error())
@@ -92,7 +92,6 @@ func getDiffLog(branch string) ([]Commit, string) {
 		stratTime = GitLog.Date
 	}
 	return GitLogSlice, stratTime
-
 }
 
 func GetProjectNameAndRemoteUrl(name string) (string, string) {

@@ -1,38 +1,60 @@
-# LOCAL_TEST 版本变更信息 
+---
+title: LOCAL_TEST 版本变更信息 2020-08-06 00:52:32
+categories:
+- code_version_tool
+date: 2020-08-06 00:52:32
+updated: 2020-08-06 00:52:32
+---
+# LOCAL_TEST 版本变更信息 2020-08-06 00:52:32
 
 ## 一、更新日志
 
 <!--简要描述本次修改影响了哪些功能，如新增XX功能，优化XX功能的XX问题等-->
 
 <!--以下信息提取自 Commit Log -->
-1. 新增：commit log 生成功能 [7b54645]()
-2. 新增：生成版本文件相关功能 [d3a3224]()
-3. 完成git log 提信息提取封装 [254f0c0]()
-4. a [2eb3b02]()
+1. 增加check命令 [1ee403d]()
+2. 优化变量替换细节 [82c3fb6]()
+3. 完成本地æ命令行调用测试 [6d0125c]()
+4. 完成日志生ç版本生成功能æ [105a211]()
+5. 新增：commit log 生成功能 [7b54645]()
+6. 新增：生成版本文件相关功能 [d3a3224]()
+7. 完成git log 提信息提取封装 [254f0c0]()
+8. a [2eb3b02]()
 
 
 <!--more-->
 ## 二、变动描述
 
-### 1. 代码变更
+### 1. 基本信息
+
+* 项目名称：code_version_tool
+* 项目地址：git@github.com:wertycn/code_version_tool.git
+* 任务编号：LOCAL_TEST
+* 开发成员：hajnxg@126.com; 
+* 生成时间：2020-08-06 00:52:32
+
+### 2. 代码变更
 
 <!--本次修改影响了哪些代码，由程序自动统计生成-->
 ```
- F10-CLI.exe               | Bin 2531840 -> 11885568 bytes
- app/file.go               |  60 --------------------
- app/file_test.go          |  62 --------------------
- app/version.go            | 141 ++++++++++------------------------------------
- app/version/LOCAL_TEST.md | 105 ----------------------------------
- app/version/TEST.md       |  91 ------------------------------
- go.mod                    |   1 -
- main.go                   |   6 +-
- template/version.md       |  91 ------------------------------
+ F10-CLI.exe               | Bin 11992576 -> 11885568 bytes
+ app/file.go               |  61 ----------------
+ app/file_test.go          |  73 -------------------
+ app/version.go            | 180 ++++++++--------------------------------------
+ app/version/LOCAL_TEST.md |  63 ----------------
+ app/version/TEST.md       |  91 -----------------------
+ cmd/check.go              |  60 ----------------
+ cmd/generate.go           |  23 ++----
+ go.mod                    |   5 +-
+ main.go                   |   9 ++-
+ template/version.md       |  57 ---------------
  version/Test.md           |   1 -
- 10 files changed, 33 insertions(+), 525 deletions(-)
+ version/shell_test.md     |  76 --------------------
+ 13 files changed, 44 insertions(+), 655 deletions(-)
 
 ```
 
-### 2. 数据库变更
+### 3. 数据库变更
 
 <!--需要对数据库做那些修改，将SQL写在下方代码区，没有写则无-->
 ```SQL
@@ -43,7 +65,7 @@
 
 ```
 
-### 3. 其他变更
+### 4. 其他变更
 
 <!-- 配置文件，环境变量，容器平台配置，数据更新依赖等等其他变更请记录在这里-->
 
@@ -61,3 +83,4 @@
 ```shell
 
 ```
+

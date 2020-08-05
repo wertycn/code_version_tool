@@ -1,3 +1,10 @@
+---
+title: {{ TASK_NO }} 版本变更信息 {{ DATE }}
+categories:
+- {{ PROJECT_GIT_NAME }}
+date: {{ DATETIME }}
+updated: {{ DATETIME }}
+---
 # {{ TASK_NO }} 版本变更信息 {{ DATE }}
 
 ## 一、更新日志
