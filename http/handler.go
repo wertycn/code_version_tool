@@ -136,6 +136,13 @@ func handlerVersionReg(writer http.ResponseWriter, request *http.Request) {
 	resp.Msg = "注册成功"
 }
 
+
+func handlerUnknown(writer http.ResponseWriter, request *http.Request) {
+	resp := &Resp{Code: 0}
+	defer MarshalJson(writer, &resp)
+	resp.Code = 0
+	resp.Msg = "请求成功"
+}
 /**
  * 生成一个md5
  */

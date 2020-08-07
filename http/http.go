@@ -27,14 +27,16 @@ func HttpService(port string) {
 	fmt.Println()
 	mux := http.NewServeMux()
 
-	// 上传文件
+	staticFiles := http.FileServer(http.Dir("./static/"))
+	mux.Handle("/static/", http.StripPrefix("/static/", staticFiles))
 	mux.HandleFunc("/upload", handlerUploadRequest)
 	mux.HandleFunc("/check", handlerVersionCheck)
 	mux.HandleFunc("/reg", handlerVersionReg)
+	mux.HandleFunc("/", handlerUnknown)
 
 	// 启动http服务
 	server := &http.Server{
-		Addr:    "127.0.0.1:" + port,
+		Addr:    ":" + port,
 		Handler: mux,
 	}
 
@@ -46,6 +48,8 @@ func HttpService(port string) {
 	}
 	log.Println("web服务启动成功")
 }
+
+
 
 
 

@@ -3,10 +3,10 @@
 复制F10-CLI文件夹到你喜欢的位置
 复制文件路径，添加环境变量
 ```
-F10_CLI_HOME = YOUR F10-CLI FILE PATH
+F10_CLI_HOME = ${YOUR F10-CLI FILE PATH}
 PATH 添加 %F10_CLI_HOME%
 ```
-重启电脑，然后在任意命令行中即可执行`F10-CLI`命令
+重启电脑，然后在git项目路径范围内即可执行`F10-CLI`命令
 
 ## 2. 使用
 ### 生成版本变更描述文件

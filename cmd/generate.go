@@ -62,7 +62,9 @@ generate命令将对比当前分支与主分支（默认为master，可通过--b
 				return
 			}
 		}
-		app.CreateVersionFile(version, branch, remote)
+		app.SetGitRemote(remote)
+		app.SetGitMainBranch(branch)
+		app.CreateVersionFile(version)
 
 		fmt.Println("版本描述文件已生成")
 		// 获取版本数据
