@@ -1,5 +1,5 @@
 /*
-Copyright © 2020 NAME HERE <EMAIL ADDRESS>
+Copyright © 2020 DEBUG.ICU <debugicu@163.com>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -16,23 +16,58 @@ limitations under the License.
 package cmd
 
 import (
+	"F10-CLI/app"
 	"fmt"
 
 	"github.com/spf13/cobra"
 )
 
+var commitType string
+var commitSubject string
+var commitTypeDoc string = `type: 
+    feat: 新特性，新功能
+    fix: 修复问题
+    refactor: 代码重构
+    docs: 文档修改
+    style: 代码格式修改, 注意不是 css 修改
+    test: 测试用例修改
+    pref: 性能提升的修改
+    build: 对项目构建或者依赖的改动
+    ci: CI 的修改
+    revert: revert 前一个 commit
+    chore: 其他修改, 比如构建流程, 依赖管理等`
+
 // commitCmd represents the commit command
 var commitCmd = &cobra.Command{
-	Use:   "commit",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Use:     "commit",
+	Aliases: []string{"c"},
+	Short:   "提交代码",
+	Long: `规范commit提交，提交前会自动执行git add all ， 提交后如果超过1天未pull主分支，会自动执行git pull origin master操作，可以使用--no-add 和 --no-pull参数禁用自动行为。
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+F10 commit规范是基于被业界广泛认可的 [Angular commit message规范]的极简版，之所以精简，是为了减少提交过程中的阻碍，同时，鼓励大家在开发过程中保持小步快跑的方式，在程序可工作的状态下，频繁进行提交，而不是采用整个项目开发完成后才提交了一次代码。
+<type>: <subject>
+类型: 对修改内容的简要描述（中文不得少于8个字,英文不得少于24个字母）
+` + commitTypeDoc + `
+subject: 
+    commit 主题，对修改内容的简要描述，不得少于8个字`,
+	Args: cobra.ExactArgs(2),
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("commit called")
+		commitType = args[0]
+		commitSubject = args[1]
+		if false == app.CheckCommitType(commitType) {
+			fmt.Println(`请输入正确的commit type`)
+			fmt.Println(commitTypeDoc)
+			fmt.Println("提交失败！")
+			return
+		}
+		fmt.Println("提交成功~")
+		if false == app.CheckCommitSubjectLength(commitSubject) {
+			fmt.Println("检查commit内容不通过，请至少输入24个字符，一个中文占3个字符")
+			return
+		}
+		app.SubmitCommit(commitSubject)
+
+
 	},
 }
 

@@ -253,3 +253,10 @@ func CreateVersionFile(version string) {
 	content = ReplaceContent(content, VersionInfo)
 	CreateFile(content, version)
 }
+
+/**
+ * 更新最新版本号
+ */
+func UpdateVersionNo(version string) {
+
+}

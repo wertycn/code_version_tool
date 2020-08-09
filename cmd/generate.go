@@ -1,5 +1,5 @@
 /*
-Copyright © 2020 NAME HERE <EMAIL ADDRESS>
+Copyright © 2020 DEBUG.ICU <hajnxg@126.com>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -28,8 +28,9 @@ var overwrite bool = false
 
 // generateCmd represents the generate command
 var generateCmd = &cobra.Command{
-	Use:   "generate",
-	Short: "生成版本描述文件",
+	Use:     "generate",
+	Aliases: []string{"g", "gen"},
+	Short:   "生成版本描述文件",
 	Long: `
 generate命令将对比当前分支与主分支（默认为master，可通过--branch=指定）差异，提取commit log 生成更新日志
 
