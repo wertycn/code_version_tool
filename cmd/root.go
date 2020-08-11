@@ -31,7 +31,6 @@ var rootCmd = &cobra.Command{
 	Use:   "F10-CLI",
 	Short: "F10 命令行工具想 V1.0",
 	Long: `F10-CLI 命令行工具箱V1.0.0
-
 使用示例：
 	
 	
@@ -70,7 +69,7 @@ func init() {
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
 
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.F10-CLI.yaml)")
+	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $F10_CLI_HOME/.F10-CLI.yaml)")
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.

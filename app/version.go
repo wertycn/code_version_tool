@@ -62,7 +62,7 @@ func SetGitMainBranch(name string) {
  */
 func GetCommitLogInfo(branch string) []Commit {
 	logs, startTime := getDiffLog(branch)
-	fetchRemoteBranch(branch, GIT_REMOTE)
+	GitFetch(branch, GIT_REMOTE)
 	hashMap := getBranchCommitHashs(branch, startTime)
 	var GitLogSlice []Commit
 	for _, GitLog := range logs {
@@ -177,15 +177,7 @@ func GetChangeFileInfo(branch string) string {
 }
 
 func fetchRemoteBranch(branch, remote string) {
-	common := `git fetch ` + remote + " " + branch
-	shell := exec.Command(GIT_SHELL_NAME, "fetch", remote, branch)
-	output, err := shell.Output()
-	if err != nil {
-		fmt.Printf("Execute Shell:%s failed with error:%s", common, err.Error())
-		//return nil, ""
-		return
-	}
-	log.Println(output)
+	GitFetch(remote,branch)
 }
 
 func getBranchCommitHashs(branch string, startTime string, ) map[string]bool {
@@ -244,19 +236,16 @@ func GetFormatCommitLog(branch string) (string, string) {
 func CreateVersionFile(version string) {
 	branch := GIT_MAIN_BRANCH
 	GetProjectNameAndRemoteUrl()
-
 	VersionInfo.Version = version
 	GetFormatCommitLog(branch)
 	GetChangeFileInfo(branch)
 	content := GetTemplateContent()
 	VersionInfo.DateTime = time.Now().Format("2006-01-02 15:04:05")
 	content = ReplaceContent(content, VersionInfo)
-	CreateFile(content, version)
+	IsVersionPathExistAndCreate()
+	CreateFile(version,PROJCET_VERSION_PATH+".latest_version")
+	fileName := PROJCET_VERSION_PATH + version + ".md"
+	CreateFile(content, fileName)
 }
 
-/**
- * 更新最新版本号
- */
-func UpdateVersionNo(version string) {
 
-}

@@ -29,9 +29,11 @@ func HttpService(port string) {
 
 	staticFiles := http.FileServer(http.Dir("./static/"))
 	mux.Handle("/static/", http.StripPrefix("/static/", staticFiles))
+	//mux.Handle("/", http.StripPrefix("/public/", staticFiles))
 	mux.HandleFunc("/upload", handlerUploadRequest)
 	mux.HandleFunc("/check", handlerVersionCheck)
 	mux.HandleFunc("/reg", handlerVersionReg)
+	mux.HandleFunc("/unreg", handlerUnVersionReg)
 	mux.HandleFunc("/", handlerUnknown)
 
 	// 启动http服务

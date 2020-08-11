@@ -8,17 +8,13 @@ import (
 )
 
 //import _ "os"
+var PROJCET_VERSION_PATH = "./version"
 
 /**
  * 创建文件
  */
-func CreateFile(content string, title string) {
-	// 判断目录是否存在 不存在则创建
-	if IsExist("./version") == false {
-		os.Mkdir("./version", os.ModePerm)
-	}
+func CreateFile(content string, fileName string) {
 
-	fileName := "./version/" + title + ".md"
 	file2, error := os.OpenFile(fileName, os.O_RDWR|os.O_CREATE, 0766)
 	if error != nil {
 		fmt.Println(error)
@@ -26,6 +22,12 @@ func CreateFile(content string, title string) {
 	fmt.Println(file2)
 	defer file2.Close()
 	file2.WriteString(content)
+}
+
+func IsVersionPathExistAndCreate() {
+	if IsExist(PROJCET_VERSION_PATH) == false {
+		os.Mkdir(PROJCET_VERSION_PATH, os.ModePerm)
+	}
 }
 
 func IsExist(path string) bool {

@@ -17,11 +17,13 @@ package cmd
 
 import (
 	"F10-CLI/http"
-	"fmt"
+	"F10-CLI/service"
 	"github.com/spf13/cobra"
+	"log"
 )
 
 var port string
+var archive string
 
 // httpCmd represents the http command
 var httpCmd = &cobra.Command{
@@ -32,12 +34,16 @@ var httpCmd = &cobra.Command{
 		if len(port) == 0 {
 			port = "9980"
 		}
+		service.SetVersionArchiveFileName(archive)
+		service.LoadLocalVersionMap()
+		go service.Crond()
 		http.HttpService(port)
-		fmt.Println("http called")
+		log.Println("http called")
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(httpCmd)
 	httpCmd.Flags().StringVarP(&port, "port", "p", "9980", "服务端口号")
+	httpCmd.Flags().StringVarP(&archive, "archive", "a", "./version_archive.json", "归档持久化文件名")
 }

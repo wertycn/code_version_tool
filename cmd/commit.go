@@ -24,6 +24,9 @@ import (
 
 var commitType string
 var commitSubject string
+var noAdd bool = false
+var noPull bool = false
+
 var commitTypeDoc string = `type: 
     feat: 新特性，新功能
     fix: 修复问题
@@ -65,22 +68,21 @@ subject:
 			fmt.Println("检查commit内容不通过，请至少输入24个字符，一个中文占3个字符")
 			return
 		}
+		if noAdd == false {
+			app.GitAddAll()
+		}
 		app.SubmitCommit(commitSubject)
 
-
+		if noPull == false {
+			app.GitPull(remote, branch)
+		}
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(commitCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// commitCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// commitCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	commitCmd.Flags().StringVarP(&branch, "branch", "b", "master", "主分支名 默认master")
+	commitCmd.Flags().StringVarP(&remote, "remote", "r", "origin", "远程地址名 默认origin")
+	commitCmd.Flags().BoolVarP(&noAdd, "no-add", "", false, "本次提交不执行git add --all")
+	commitCmd.Flags().BoolVarP(&noPull, "no-pull", "", false, "本次提交后不执行git pull")
 }

@@ -34,3 +34,29 @@ func GitAdd(r string) bool {
 func GitAddAll() bool {
 	return GitAdd("--all")
 }
+
+func GitPull(remote, branch string) bool {
+	var commond = []string{GIT_SHELL_NAME, "pull", remote, branch}
+	shell := exec.Command(GIT_SHELL_NAME, "add", remote, branch)
+	output, err := shell.Output()
+	outString := string(output)
+	if err != nil {
+		fmt.Printf("Execute Shell:%s\n failed with error:%s\n failed with output:\n %s", commond, err.Error(), outString)
+		return false
+	}
+	fmt.Println(outString)
+	return true
+}
+
+func GitFetch(remote, branch string) bool {
+	var commond = []string{GIT_SHELL_NAME, "fetch", remote, branch}
+	shell := exec.Command(GIT_SHELL_NAME, "fetch", remote, branch)
+	output, err := shell.Output()
+	outString := string(output)
+	if err != nil {
+		fmt.Printf("Execute Shell:%s\n failed with error:%s\n failed with output:\n %s", commond, err.Error(), outString)
+		return false
+	}
+	fmt.Println(outString)
+	return true
+}

@@ -44,6 +44,7 @@ func TestCheckCommitSubjectNotPass(t *testing.T) {
 }
 
 func TestGitCommit(t *testing.T) {
+	// TODO : 完整测试应该先添加变动再执行git add ,并再提交后回滚
 	if app.GitCommit("feat","submit commit message test") {
 
 	}else{

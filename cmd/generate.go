@@ -22,8 +22,8 @@ import (
 )
 
 var version string
-var branch string
-var remote string
+var branch string = "master"
+var remote string = "origin"
 var overwrite bool = false
 
 // generateCmd represents the generate command
