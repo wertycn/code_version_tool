@@ -107,7 +107,10 @@ func GetMainDir() (string, error) {
 
 func SavePullTime() {
 	pullTimeConfigPath := GetPullTimeConfigPath()
-	file, error := os.OpenFile(pullTimeConfigPath, os.O_CREATE, 0766)
+	if IsExist(pullTimeConfigPath) == false {
+		os.Mkdir(pullTimeConfigPath, os.ModePerm)
+	}
+	file, error := os.OpenFile(pullTimeConfigPath+"latest_pull_time", os.O_CREATE, 0766)
 	defer file.Close()
 	if error != nil {
 		log.Println("保存项目pull时间失败：" + error.Error())
@@ -120,10 +123,10 @@ func SavePullTime() {
 
 func GetLatestPullTime() int64 {
 	pullTimeConfigPath := GetPullTimeConfigPath()
-	if IsExist(pullTimeConfigPath) {
+	if IsExist(pullTimeConfigPath + "latest_pull_time") {
 		return 0
 	}
-	content, err := ioutil.ReadFile(pullTimeConfigPath)
+	content, err := ioutil.ReadFile(pullTimeConfigPath + "latest_pull_time")
 	if err != nil {
 		return 0
 	}
@@ -137,6 +140,6 @@ func GetPullTimeConfigPath() string {
 		panic(err.Error())
 	}
 	sep := string(os.PathSeparator)
-	pullTimeConfigPath := projectPath + sep + ".F10-CLI" + sep + "latest_pull_time"
+	pullTimeConfigPath := projectPath + sep + ".F10-CLI" + sep
 	return pullTimeConfigPath
 }
