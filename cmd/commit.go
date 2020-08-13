@@ -63,7 +63,6 @@ subject:
 			fmt.Println("提交失败！")
 			return
 		}
-		fmt.Println("提交成功~")
 		if false == app.CheckCommitSubjectLength(commitSubject) {
 			fmt.Println("检查commit内容不通过，请至少输入24个字符，一个中文占3个字符")
 			return
@@ -72,7 +71,7 @@ subject:
 			app.GitAddAll()
 		}
 		app.SubmitCommit(commitType + ": " + commitSubject)
-
+		fmt.Println("提交命令执行结束")
 		if noPull == false && app.IsPullMainBranch() {
 			fmt.Println("满足pull主分支条件，即将执行git pull " + remote + " " + branch)
 			app.GitPull(remote, branch)
