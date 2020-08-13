@@ -126,6 +126,7 @@ func SavePullTime() {
 func GetLatestPullTime() int64 {
 	pullTimeConfigPath := GetPullTimeConfigPath()
 	if IsExist(pullTimeConfigPath + "latest_pull_time") {
+		fmt.Println("配置文件不存在")
 		return 0
 	}
 	content, err := ioutil.ReadFile(pullTimeConfigPath + "latest_pull_time")
