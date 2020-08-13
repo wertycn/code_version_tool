@@ -2,7 +2,6 @@ package app
 
 import (
 	"fmt"
-	"log"
 	"os/exec"
 )
 
@@ -39,9 +38,9 @@ func SubmitCommit(s string) {
 	shell := exec.Command(GIT_SHELL_NAME, "commit", "-m", s)
 	output, err := shell.Output()
 	if err != nil {
-		fmt.Printf("Execute Shell:%s failed with error:%s", "", err.Error())
+		fmt.Printf("Execute Shell:%s \nfailed with error:%s\n", "", err.Error())
 		//return nil, ""
+		return
 	}
-	gitUrl := string(output)
-	log.Println("output:", gitUrl)
+	fmt.Println(string(output))
 }
