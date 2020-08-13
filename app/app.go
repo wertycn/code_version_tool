@@ -80,7 +80,9 @@ func IsPullMainBranch() bool {
 	//	判断项目上次提交主分支的时间
 	now := time.Now().Unix()
 	latestPull := GetLatestPullTime()
-	if now-latestPull > 36000 {
+	i := now - latestPull
+	fmt.Println(i)
+	if i > 36000 {
 		return true
 	}
 	return false
