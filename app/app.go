@@ -81,7 +81,6 @@ func IsPullMainBranch() bool {
 	now := time.Now().Unix()
 	latestPull := GetLatestPullTime()
 	i := now - latestPull
-	fmt.Println(i)
 	if i > 36000 {
 		return true
 	}
@@ -91,10 +90,8 @@ func IsPullMainBranch() bool {
 // 获取项目根目录
 func GetMainDir() (string, error) {
 	pwd, _ := os.Getwd()
-	fmt.Println(pwd)
 	sep := string(os.PathSeparator)
 	dirSlice := strings.Split(pwd, sep)
-	fmt.Println(sep)
 	gitDir := ""
 	for i := 0; i < len(dirSlice); i++ {
 		if IsExist(gitDir + ".git") {
@@ -115,7 +112,7 @@ func SavePullTime() {
 	file, error := os.OpenFile(pullTimeConfigPath+"latest_pull_time", os.O_CREATE, 0766)
 	defer file.Close()
 	if error != nil {
-		log.Println("保存项目pull时间失败：" + error.Error())
+		fmt.Println("保存项目pull时间失败：" + error.Error())
 		return
 	}
 	timestamp := time.Now().Format("2006-01-02 15:04:05")
