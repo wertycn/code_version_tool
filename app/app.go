@@ -130,6 +130,7 @@ func GetLatestPullTime() int64 {
 	}
 	content, err := ioutil.ReadFile(pullTimeConfigPath + "latest_pull_time")
 	if err != nil {
+		fmt.Println("获取最新pull时间异常")
 		return 0
 	}
 	timestamp := string(content)
