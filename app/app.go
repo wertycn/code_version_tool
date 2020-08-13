@@ -1,14 +1,26 @@
 package app
 
 import (
+	"F10-CLI/util"
+	"errors"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
+	"path/filepath"
 	"strings"
+	"time"
 )
 
 //import _ "os"
 var PROJCET_VERSION_PATH = "./version"
+
+type USER_RUN_INFO_TYPE struct {
+	LatestPullTime time.Time
+	ProjectPath    string
+	Remote         string
+	MainBranch     string
+}
 
 /**
  * 创建文件
@@ -62,4 +74,69 @@ func ReplaceContent(content string, versionInfo VersionInfoType) string {
 	content = strings.ReplaceAll(content, "{{ CODE_CHANGE_FILE_INFO }}", versionInfo.CodeChangeFileInfo)
 	content = strings.ReplaceAll(content, "{{ CODE_CHANGE_COMMIT_INFO }}", versionInfo.CodeChangeCommitInfo)
 	return content
+}
+
+func IsPullMainBranch() bool {
+	//	判断项目上次提交主分支的时间
+	now := time.Now().Unix()
+	latestPull := GetLatestPullTime()
+	if now-latestPull > 36000 {
+		return true
+	}
+	return false
+}
+
+// 获取项目根目录
+func GetMainDir() (string, error) {
+	pwd, _ := os.Getwd()
+	fmt.Println(pwd)
+	sep := string(os.PathSeparator)
+	dirSlice := strings.Split(pwd, sep)
+	fmt.Println(sep)
+	gitDir := ""
+	for i := 0; i < len(dirSlice); i++ {
+		if IsExist(gitDir + ".git") {
+			projectPath, _ := filepath.Abs(pwd + sep + gitDir)
+			return projectPath, nil
+		}
+		gitDir = "../" + gitDir
+	}
+
+	return "", errors.New("没有找到git项目根目录")
+}
+
+func SavePullTime() {
+	pullTimeConfigPath := GetPullTimeConfigPath()
+	file, error := os.OpenFile(pullTimeConfigPath, os.O_CREATE, 0766)
+	defer file.Close()
+	if error != nil {
+		log.Println("保存项目pull时间失败：" + error.Error())
+		return
+	}
+	timestamp := time.Now().Format("2006-01-02 15:04:05")
+	file.WriteString(timestamp)
+	log.Println("更新项目pull主分支时间成功")
+}
+
+func GetLatestPullTime() int64 {
+	pullTimeConfigPath := GetPullTimeConfigPath()
+	if IsExist(pullTimeConfigPath) {
+		return 0
+	}
+	content, err := ioutil.ReadFile(pullTimeConfigPath)
+	if err != nil {
+		return 0
+	}
+	timestamp := string(content)
+	return util.StrTime2Int(timestamp)
+}
+
+func GetPullTimeConfigPath() string {
+	projectPath, err := GetMainDir()
+	if err != nil {
+		panic(err.Error())
+	}
+	sep := string(os.PathSeparator)
+	pullTimeConfigPath := projectPath + sep + ".F10-CLI" + sep + "latest_pull_time"
+	return pullTimeConfigPath
 }

@@ -35,10 +35,8 @@ func CheckCommitSubjectLength(subject string) bool {
 	return true
 }
 
-
-
 func SubmitCommit(s string) {
-	shell := exec.Command(GIT_SHELL_NAME, "remote", "get-url", GIT_REMOTE)
+	shell := exec.Command(GIT_SHELL_NAME, "commit", "-m", s)
 	output, err := shell.Output()
 	if err != nil {
 		fmt.Printf("Execute Shell:%s failed with error:%s", "", err.Error())

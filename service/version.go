@@ -2,20 +2,23 @@ package service
 
 import (
 	"F10-CLI/app"
+	"bytes"
 	"encoding/json"
+	"fmt"
 	simplejson "github.com/bitly/go-simplejson"
 	"io/ioutil"
 	"log"
+	"net/http"
 	"os"
 	"time"
 )
 
 type VersionType struct {
-	Version    string
-	Project    string
-	CreateTime string
-	UpdateTime string
-	Service    []string
+	Version    string   `json:version`
+	Project    string   `json:project`
+	CreateTime string   `json:create_time`
+	UpdateTime string   `json:update_time`
+	Service    []string `json:service`
 }
 
 var versionMap = make(map[string]VersionType)
@@ -100,7 +103,7 @@ func SaveVersionMap() {
 		log.Println("持久化版本数据失败：" + err.Error())
 		return
 	}
-	file, error := os.OpenFile(VERSION_ARCHIVE_NAME, os.O_RDWR|os.O_CREATE, 0766)
+	file, error := os.OpenFile(VERSION_ARCHIVE_NAME, os.O_CREATE, 0766)
 	defer file.Close()
 	if error != nil {
 		log.Println("持久化版本数据失败：" + error.Error())
@@ -118,14 +121,22 @@ func LoadLocalVersionMap() {
 		log.Println("加载持久化版本数据失败：" + VERSION_ARCHIVE_NAME + "文件不存在。")
 		return
 	}
-	file, err := JsonLoad(VERSION_ARCHIVE_NAME)
-
+	file, err := os.Open(VERSION_ARCHIVE_NAME)
+	defer file.Close()
+	//file, err := JsonLoad(VERSION_ARCHIVE_NAME)
+	var _versionMap = make(map[string]VersionType)
 	if err != nil {
 		log.Println("加载持久化版本数据失败：" + err.Error())
 		// 重新创建
-		versionMap = make(map[string]VersionType)
+		//versionMap = make(map[string]VersionType)
 		return
 	}
+	decoder := json.NewDecoder(file)
+	err = decoder.Decode(&_versionMap)
+	if err != nil {
+		log.Println("decoder failed")
+	}
+	versionMap = _versionMap
 	//versionMap = file.(map[string]VersionType)
 	log.Println("加载持久化版本数据成功")
 }
@@ -136,4 +147,14 @@ func JsonLoad(filename string) (*simplejson.Json, error) {
 		return nil, nil
 	}
 	return simplejson.NewJson(data)
+}
+
+func UnMarshalJson(req *http.Request, v interface{}) error {
+	result, err := ioutil.ReadAll(req.Body)
+	fmt.Println(req)
+	if err != nil {
+		return err
+	}
+	json.Unmarshal([]byte(bytes.NewBuffer(result).String()), v)
+	return nil
 }

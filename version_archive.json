@@ -1,11 +1,1 @@
-{
-  "test": {
-    "Version": "test",
-    "Project": "testtest",
-    "CreateTime": "2020-08-12 02:25:17",
-    "UpdateTime": "2020-08-12 02:25:40",
-    "Service": [
-      "app"
-    ]
-  }
-}
+{"111":{"Version":"111","Project":"f10-cli","CreateTime":"2020-08-14 00:30:59","UpdateTime":"2020-08-14 00:43:54","Service":["stocktag4","stocktag1","stocktag6"]}}

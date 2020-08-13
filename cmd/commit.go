@@ -73,8 +73,10 @@ subject:
 		}
 		app.SubmitCommit(commitSubject)
 
-		if noPull == false {
+		if noPull == false && app.IsPullMainBranch() {
+			fmt.Println("满足pull主分支条件，即将执行git pull " + remote + " " + branch)
 			app.GitPull(remote, branch)
+			app.SavePullTime()
 		}
 	},
 }

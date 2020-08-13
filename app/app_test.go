@@ -68,8 +68,15 @@ func TestGetRemoteUrl(t *testing.T) {
 	t.Log("pass", url, name)
 }
 
-
 func TestGetChangeFileInfo(t *testing.T) {
 	info := app.GetChangeFileInfo("dev")
 	t.Log(info)
+}
+
+func TestGetMainDir(t *testing.T) {
+	projectPath, err := app.GetMainDir()
+	if err != nil {
+		t.Log(projectPath)
+	}
+	t.Log(projectPath)
 }
