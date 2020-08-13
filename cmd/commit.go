@@ -71,7 +71,7 @@ subject:
 		if noAdd == false {
 			app.GitAddAll()
 		}
-		app.SubmitCommit(commitSubject)
+		app.SubmitCommit(commitType + ": " + commitSubject)
 
 		if noPull == false && app.IsPullMainBranch() {
 			fmt.Println("满足pull主分支条件，即将执行git pull " + remote + " " + branch)
