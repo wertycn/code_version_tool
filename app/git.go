@@ -37,7 +37,7 @@ func GitAddAll() bool {
 
 func GitPull(remote, branch string) bool {
 	var commond = []string{GIT_SHELL_NAME, "pull", remote, branch}
-	shell := exec.Command(GIT_SHELL_NAME, "add", remote, branch)
+	shell := exec.Command(GIT_SHELL_NAME, "pull", remote, branch)
 	output, err := shell.Output()
 	outString := string(output)
 	if err != nil {
